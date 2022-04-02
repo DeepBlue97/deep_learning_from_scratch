@@ -1,6 +1,7 @@
 4.2
-1. operator
-2. gradient
-3. optimizer
-4. layer
-5. model
+0. trainer => 负责调度其它模块
+1. operator => 负责各种算子
+2. gradient => 负责求梯度
+3. optimizer => 负责根据梯度调整权重
+4. layer => 负责建立层
+5. model => 负责建立完整模型
