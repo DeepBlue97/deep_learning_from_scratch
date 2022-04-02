@@ -1,5 +1,5 @@
 import numpy as np
-import sympy as sy
+# import sympy as sy
 
 def softmax(x: np.ndarray):
     """
