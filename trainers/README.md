@@ -1,2 +1,2 @@
-# deep_learning_from_scratch
-deep learning framework from scratch
+# 负责整体调度
+
