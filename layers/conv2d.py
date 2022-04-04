@@ -2,16 +2,17 @@ import numpy as np
 
 """
 该算法用了较多的循环，但是较为节省资源开销，计算复杂度对于像素个数来说为n
+缺点是只用到了单核性能。
 """
 
 def conv2d(IN: np.ndarray, KERNEL: np.ndarray, PADDING: bool | int = 0):
     """
     input:
-        IN: (IN_B, IN_C, IN_H, IN_W)
-        KERNEL: (KERNEL_B, KERNEL_C=IN_C, KERNEL_H, KERNEL_W)
+        IN: np.ndarray(IN_B, IN_C, IN_H, IN_W)
+        KERNEL: np.ndarray(KERNEL_B, KERNEL_C=IN_C, KERNEL_H, KERNEL_W)
 
     output: 
-        out: (OUT_B=IN_B, OUT_C=KERNEL_B, OUT_H, OUT_W)
+        out: np.ndarray(OUT_B=IN_B, OUT_C=KERNEL_B, OUT_H, OUT_W)
 
     """
     # 自动设置PADDING量
