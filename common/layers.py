@@ -44,12 +44,12 @@ class Affine:
         
         self.x = None
         self.original_x_shape = None
-        # 重み・バイアスパラメータの微分
+        # 重み・バイアスパラメータの微分 权重、偏置参数的微分
         self.dW = None
         self.db = None
 
     def forward(self, x):
-        # テンソル対応
+        # テンソル対応 张量对应
         self.original_x_shape = x.shape
         x = x.reshape(x.shape[0], -1)
         self.x = x
@@ -63,7 +63,7 @@ class Affine:
         self.dW = np.dot(self.x.T, dout)
         self.db = np.sum(dout, axis=0)
         
-        dx = dx.reshape(*self.original_x_shape)  # 入力データの形状に戻す（テンソル対応）
+        dx = dx.reshape(*self.original_x_shape)  # 入力データの形状に戻す 恢复输入数据的形状（テンソル対応）张量对应
         return dx
 
 
@@ -89,7 +89,7 @@ class SoftmaxWithLoss:
             dx[np.arange(batch_size), self.t] -= 1
             dx = dx / batch_size
         
-        return dx
+        return dx  # (100, 10)
 
 
 class Dropout:
