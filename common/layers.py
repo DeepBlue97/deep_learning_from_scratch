@@ -59,12 +59,12 @@ class Affine:
         return out
 
     def backward(self, dout): # (100, 10)
-        dx = np.dot(dout, self.W.T) # (100, 100)
-        self.dW = np.dot(self.x.T, dout) # (100, 10)
+        dx = np.dot(dout, self.W.T) # (100, 10).dot((10, 100)) == (100, 100)
+        self.dW = np.dot(self.x.T, dout) # (100, 100).dot((100, 10)) == (100, 10)
         self.db = np.sum(dout, axis=0) # (10,)
         
         dx = dx.reshape(*self.original_x_shape)  # 入力データの形状に戻す 恢复输入数据的形状（テンソル対応）张量对应
-        return dx
+        return dx  # (100, 10) or (4320, 100)
 
 
 class SoftmaxWithLoss:
