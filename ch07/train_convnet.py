@@ -1,5 +1,7 @@
 # coding: utf-8
-import sys, os
+import os
+import sys
+
 sys.path.append(os.getcwd())  # 使得可以找到open目录
 sys.path.append(os.pardir)  # 親ディレクトリのファイルをインポートするための設定
 import numpy as np
