@@ -16,7 +16,7 @@ class Relu:
         return out
 
     def backward(self, dout):
-        dout[self.mask] = 0
+        dout[self.mask] = 0  # 小于0的地方梯度为0，其它地方原样输出
         dx = dout
 
         return dx
@@ -32,6 +32,7 @@ class Sigmoid:
         return out
 
     def backward(self, dout):
+        # 根据求导公式可得出
         dx = dout * (1.0 - self.out) * self.out
 
         return dx
@@ -258,27 +259,27 @@ class Pooling:
         out_h = int(1 + (H - self.pool_h) / self.stride)
         out_w = int(1 + (W - self.pool_w) / self.stride)
 
-        col = im2col(x, self.pool_h, self.pool_w, self.stride, self.pad)
-        col = col.reshape(-1, self.pool_h*self.pool_w)
+        col = im2col(x, self.pool_h, self.pool_w, self.stride, self.pad)  # (14400, 120)
+        col = col.reshape(-1, self.pool_h*self.pool_w)  # (432000, 4)
 
-        arg_max = np.argmax(col, axis=1)
-        out = np.max(col, axis=1)
-        out = out.reshape(N, out_h, out_w, C).transpose(0, 3, 1, 2)
+        arg_max = np.argmax(col, axis=1)  # (432000,) 保存最大值的索引
+        out = np.max(col, axis=1)  # (432000,) 保存最大值
+        out = out.reshape(N, out_h, out_w, C).transpose(0, 3, 1, 2)  # (100, 30, 12, 12)
 
-        self.x = x
-        self.arg_max = arg_max
+        self.x = x  # (100, 30, 24, 24)
+        self.arg_max = arg_max  # ↑
 
         return out  # (100, 30, 12, 12)
 
-    def backward(self, dout):
-        dout = dout.transpose(0, 2, 3, 1)
+    def backward(self, dout):  # (100, 30, 12, 12)
+        dout = dout.transpose(0, 2, 3, 1)  # (100, 12, 12, 30)
         
-        pool_size = self.pool_h * self.pool_w
-        dmax = np.zeros((dout.size, pool_size))
-        dmax[np.arange(self.arg_max.size), self.arg_max.flatten()] = dout.flatten()
-        dmax = dmax.reshape(dout.shape + (pool_size,)) 
+        pool_size = self.pool_h * self.pool_w  # 2*2 = 4
+        dmax = np.zeros((dout.size, pool_size))  # (432000, 4)
+        dmax[np.arange(self.arg_max.size), self.arg_max.flatten()] = dout.flatten()  # (432000,)
+        dmax = dmax.reshape(dout.shape + (pool_size,))  # (100, 12, 12, 30, 4)
         
-        dcol = dmax.reshape(dmax.shape[0] * dmax.shape[1] * dmax.shape[2], -1)
-        dx = col2im(dcol, self.x.shape, self.pool_h, self.pool_w, self.stride, self.pad)
+        dcol = dmax.reshape(dmax.shape[0] * dmax.shape[1] * dmax.shape[2], -1)  # (14400, 120) = 1728000
+        dx = col2im(dcol, self.x.shape, self.pool_h, self.pool_w, self.stride, self.pad)  # (100, 30, 24, 24) = 1728000
         
         return dx
