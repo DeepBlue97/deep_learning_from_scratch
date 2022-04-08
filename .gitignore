@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 layers/out.jpg
 /.idea
+/backbone/*.pdf
+/maskrcnn/*.pdf

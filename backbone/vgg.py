@@ -6,7 +6,7 @@ from common.layers import (
     Pooling,
     Convolution,
     Affine,
-    softmax,
+    Softmax,
 )
 
 
@@ -45,3 +45,4 @@ class VGG11:
         self.layers['FC4096'] = Affine(W=self.params['W9'], b=self.params['b9'])  # out 4096
         self.layers['FC4096'] = Affine(W=self.params['W10'], b=self.params['b10'])  # out 4096
         self.layers['FC1000'] = Affine(W=self.params['W11'], b=self.params['b11'])  # out 1000
+        self.layers['softmax'] = Softmax()
