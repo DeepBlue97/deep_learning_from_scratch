@@ -18,7 +18,7 @@ def _numerical_gradient_no_batch(f, x):
         fxh2 = f(x)  # f(x-h)
         grad[idx] = (fxh1 - fxh2) / (2*h)
         
-        x[idx] = tmp_val  # 値を元に戻す
+        x[idx] = tmp_val  # 値を元に戻す 撤消值 恢复值 把值放回原处
         
     return grad
 
