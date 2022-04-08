@@ -1,3 +1,6 @@
+4.8
+1. 三步走：numpy Mask-RCNN => C++/cuda Mask-RCNN => TensorRT Mask-RCNN
+
 4.6
 1. 梯度的含义即该参数对loss值的梯度；
 2. 梯度反向传播时的shape即各层的输入输出形状；
