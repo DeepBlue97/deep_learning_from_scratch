@@ -106,11 +106,11 @@ class SoftmaxWithLoss:
     def backward(self, dout=1):
         batch_size = self.t.shape[0]
         if self.t.size == self.y.size:  # 教師データがone-hot-vectorの場合
-            dx = (self.y - self.t) / batch_size
+            dx: np.ndarray = (self.y - self.t) / batch_size
         else:
             dx = self.y.copy()
             dx[np.arange(batch_size), self.t] -= 1
-            dx = dx / batch_size
+            dx: np.ndarray = dx / batch_size
 
         return dx  # (100, 10)
 
