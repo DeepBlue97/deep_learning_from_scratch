@@ -25,6 +25,6 @@ J00 ... J0n
 Jm0 ... Jmn
 ```
 
-
+行为输出
 f was output, which length is m.
 x was input, which length is n.
