@@ -132,7 +132,7 @@ class SoftmaxWithLoss:
             dx: np.ndarray = (self.y - self.t) / batch_size
         else:
             dx = self.y.copy()
-            dx[np.arange(batch_size), self.t] -= 1  # 使得正确标号对应的输入其偏导为负（越大损失值越小）
+            dx[np.arange(batch_size), self.t] -= 1  # 使得正确标号对应的输入其偏导为负（使得该处输出值越大损失值越小）
             dx: np.ndarray = dx / batch_size  # 减小偏导的绝对值的简便方法
 
         return dx  # (100, 10)
@@ -140,7 +140,7 @@ class SoftmaxWithLoss:
 
 class Dropout:
     """
-    http://arxiv.org/abs/1207.0580
+    https://arxiv.org/abs/1207.0580
     """
 
     def __init__(self, dropout_ratio=0.5):
@@ -160,7 +160,7 @@ class Dropout:
 
 class BatchNormalization:
     """
-    http://arxiv.org/abs/1502.03167
+    https://arxiv.org/abs/1502.03167
     """
 
     def __init__(self, gamma, beta, momentum=0.9, running_mean=None, running_var=None):
@@ -211,7 +211,7 @@ class BatchNormalization:
             self.running_var = self.momentum * self.running_var + (1 - self.momentum) * var
         else:
             xc = x - self.running_mean
-            xn = xc / ((np.sqrt(self.running_var + 10e-7)))
+            xn = xc / (np.sqrt(self.running_var + 10e-7))
 
         out = self.gamma * xn + self.beta
         return out
@@ -283,7 +283,7 @@ class Convolution:
 
         self.db = np.sum(dout, axis=0)
         self.dW = np.dot(self.col.T, dout)
-        self.dW = self.dW.transpose(1, 0).reshape(FN, C, FH, FW)
+        self.dW = self.dW.transpose((1, 0)).reshape((FN, C, FH, FW))
 
         dcol = np.dot(dout, self.col_W.T)
         dx = col2im(dcol, self.x.shape, FH, FW, self.stride, self.pad)
@@ -311,7 +311,7 @@ class Pooling:
 
         arg_max = np.argmax(col, axis=1)  # (432000,) 保存最大值的索引
         out = np.max(col, axis=1)  # (432000,) 保存最大值
-        out = out.reshape(N, out_h, out_w, C).transpose(0, 3, 1, 2)  # (100, 30, 12, 12)
+        out = out.reshape((N, out_h, out_w, C)).transpose(0, 3, 1, 2)  # (100, 30, 12, 12)
 
         self.x = x  # (100, 30, 24, 24)
         self.arg_max = arg_max  # ↑
