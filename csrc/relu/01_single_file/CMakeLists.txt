@@ -4,4 +4,4 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(cpptest LANGUAGES CXX)
 
-add_executable(main main.cpp)
+add_executable(main main.cpp relu.h)
